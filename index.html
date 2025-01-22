@@ -3,7 +3,7 @@
 	<head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Jackson Template</title>
+	<title>Sabin Portfolio</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content="" />
 	<meta name="keywords" content="" />
@@ -438,21 +438,18 @@
 						<div class="col-md-7 col-md-push-1">
 							<div class="row">
 								<div class="col-md-10 col-md-offset-1 col-md-pull-1 animate-box" data-animate-effect="fadeInRight">
-									<form action="">
+									<form method="post" onsubmit="return validate()">
 										<div class="form-group">
-											<input type="text" class="form-control" placeholder="Name">
+											<input id="name" name="Name" type="text" class="form-control" placeholder="Name"  pattern="^[A-Za-z\s]+$">
 										</div>
 										<div class="form-group">
-											<input type="text" class="form-control" placeholder="Email">
+											<input id="email" name="Email" type="email" class="form-control" placeholder="Email" >
 										</div>
 										<div class="form-group">
-											<input type="text" class="form-control" placeholder="Subject">
+											<textarea id="message" name="Message" id="message" cols="30" rows="7" class="form-control" placeholder="Message"></textarea>
 										</div>
 										<div class="form-group">
-											<textarea name="" id="message" cols="30" rows="7" class="form-control" placeholder="Message"></textarea>
-										</div>
-										<div class="form-group">
-											<input type="submit" class="btn btn-primary btn-send-message" value="Send Message">
+											<input type="submit" class="btn btn-primary btn-send-message" value="Send Message" ">
 										</div>
 									</form>
 								</div>
@@ -466,7 +463,42 @@
 		</div><!-- end:colorlib-main -->
 	</div><!-- end:container-wrap -->
 	</div><!-- end:colorlib-page -->
+	<script>
+		function validate(){
+			let name = document.getElementById("name");
+			let email = document.getElementById("email");
+			let message = document.getElementById("message");
+			if(name.value.trim()=='' || name.value==null){
+				alert("Name cannot be  Blank")
+				return false;
+			}
 
+			if(email.value.trim()==''||email.value==null){
+				alert("email cannot be Blank")
+				return false;
+			}
+
+			true;
+		}
+		Email.send({
+				Host : "smtp.elasticemail.com",
+				Username : "vvsabin@gmail.com",
+				Password : "5A9EC8204AF1F1C5527AC7E2B06CB162CCB9",
+				To : 'vvsabin@gmail.com',
+				From : "email",
+				Subject : "This is the subject",
+				Body : "And this is the body"
+			}).then(
+			message => alert("Thank You")
+			);
+		
+
+		form.addEventListener('submit',(e) => {
+			e.preventDefault();
+		})
+	</script>
+	<script src="https://smtpjs.com/v3/smtp.js">
+	</script>
 	<!-- jQuery -->
 	<script src="js/jquery.min.js"></script>
 	<!-- jQuery Easing -->
