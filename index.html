@@ -23,6 +23,17 @@
 	<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 	<link rel="shortcut icon" href="favicon.ico">
 
+	<script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+</script>
+<script type="text/javascript">
+   (function(){
+      emailjs.init({
+        publicKey: "5n7kYx68AVY7jXQ9H",
+      });
+   })();
+</script>
+
 	<link href="https://fonts.googleapis.com/css?family=Quicksand:300,400,500,700" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700" rel="stylesheet">
 	
@@ -51,7 +62,7 @@
 
 	</head>
 	<body>
-	<div id="colorlib-page">
+9	<div id="colorlib-page">
 		<div class="container-wrap">
 		<a href="#" class="js-colorlib-nav-toggle colorlib-nav-toggle" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar"><i></i></a>
 		<aside id="colorlib-aside" role="complementary" class="border js-fullheight">
@@ -77,10 +88,10 @@
 			<div class="colorlib-footer">
 				
 				<ul>
-					<li><a href="#"><i class="icon-facebook2"></i></a></li>
-					<li><a href="#"><i class="icon-twitter2"></i></a></li>
+					<li><a href="https://www.facebook.com/sabinvv.sabin"><i class="icon-facebook2"></i></a></li>
+					<li><a href="https://x.com/SABIN18623413"><i class="icon-twitter2"></i></a></li>
 					<li><a href="#"><i class="icon-instagram"></i></a></li>
-					<li><a href="#"><i class="icon-linkedin2"></i></a></li>
+					<li><a href="https://www.linkedin.com/in/sabin-vv-558286178/"><i class="icon-linkedin2"></i></a></li>
 				</ul>
 			</div>
 
@@ -438,20 +449,20 @@
 						<div class="col-md-7 col-md-push-1">
 							<div class="row">
 								<div class="col-md-10 col-md-offset-1 col-md-pull-1 animate-box" data-animate-effect="fadeInRight">
-									<form method="post" onsubmit="return validate()">
+									<form id="contactForm" method="post" onsubmit="return validate()">
 										<div class="form-group">
-											<input id="name" name="Name" type="text" class="form-control" placeholder="Name"  pattern="^[A-Za-z\s]+$">
+										  <input id="name" name="Name" type="text" class="form-control" placeholder="Name" pattern="^[A-Za-z\s]+$">
 										</div>
 										<div class="form-group">
-											<input id="email" name="Email" type="email" class="form-control" placeholder="Email" >
+										  <input id="email" name="Email" type="email" class="form-control" placeholder="Email">
 										</div>
 										<div class="form-group">
-											<textarea id="message" name="Message" id="message" cols="30" rows="7" class="form-control" placeholder="Message"></textarea>
+										  <textarea id="message" name="Message" cols="30" rows="7" class="form-control" placeholder="Message"></textarea>
 										</div>
 										<div class="form-group">
-											<input type="submit" class="btn btn-primary btn-send-message" value="Send Message" ">
+										  <input type="submit" class="btn btn-primary btn-send-message" value="Send Message">
 										</div>
-									</form>
+									  </form>
 								</div>
 								
 							</div>
@@ -463,40 +474,56 @@
 		</div><!-- end:colorlib-main -->
 	</div><!-- end:container-wrap -->
 	</div><!-- end:colorlib-page -->
-	<script>
-		function validate(){
-			let name = document.getElementById("name");
-			let email = document.getElementById("email");
-			let message = document.getElementById("message");
-			if(name.value.trim()=='' || name.value==null){
-				alert("Name cannot be  Blank")
-				return false;
-			}
 
-			if(email.value.trim()==''||email.value==null){
-				alert("email cannot be Blank")
-				return false;
-			}
 
-			true;
-		}
-		Email.send({
-				Host : "smtp.elasticemail.com",
-				Username : "vvsabin@gmail.com",
-				Password : "5A9EC8204AF1F1C5527AC7E2B06CB162CCB9",
-				To : 'vvsabin@gmail.com',
-				From : "email",
-				Subject : "This is the subject",
-				Body : "And this is the body"
-			}).then(
-			message => alert("Thank You")
-			);
-		
+<script>
+  
+  // Form validation function
+  function validate() {
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const message = document.getElementById("message").value;
 
-		form.addEventListener('submit',(e) => {
-			e.preventDefault();
-		})
-	</script>
+    if (name.trim() === '' || name === null) {
+      alert("Name cannot be blank");
+      return false;
+    }
+
+    if (email.trim() === '' || email === null) {
+      alert("Email cannot be blank");
+      return false;
+    }
+
+    if (message.trim() === '' || message === null) {
+      alert("Message cannot be blank");
+      return false;
+    }
+
+    // Send email if validation passes
+    sendEmail(name, email, message);
+    return false; // Prevent default form submission
+  }
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault(); // Prevent default form behavior
+  });
+
+  function sendEmail(name, email, message) {
+    const serviceID = "service_5edcdjz"; 
+    const templateID = "template_pnz2jxq"; 
+
+    emailjs
+      .send(serviceID, templateID, { name, email, message })
+      .then(() => {
+        alert("Message sent successfully!");
+        document.getElementById("contactForm").reset();
+      })
+      .catch((error) => {
+        console.error("Failed to send message:", error);
+        alert("Failed to send message. Please try again.");
+      });
+  }
+</script>
 	<script src="https://smtpjs.com/v3/smtp.js">
 	</script>
 	<!-- jQuery -->
