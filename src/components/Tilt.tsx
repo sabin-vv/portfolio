@@ -48,7 +48,7 @@ export default function Tilt({ children, className = '', max = 5 }: TiltProps) {
                 className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-200 group-hover/tilt:opacity-100"
                 style={{
                     background:
-                        'radial-gradient(circle at var(--tilt-x, 50%) var(--tilt-y, 50%), rgba(0, 229, 255, 0.07), transparent 55%)',
+                        'radial-gradient(circle at var(--tilt-x, 50%) var(--tilt-y, 50%), rgba(182, 243, 107, 0.08), transparent 55%)',
                 }}
             />
         </div>
