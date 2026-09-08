@@ -10,7 +10,7 @@ export const hero = {
     role: 'MERN-Stack Developer',
     name: 'Sabin V V',
     tagline:
-        'Building modern web applications for businesses. I specialize in scalable architecture, intuitive interfaces, and turning complex problems into elegant technical solutions.',
+        'Building modern web applications with scalable architecture, intuitive interfaces, and thoughtful user experiences. I turn complex problems into practical, reliable, and maintainable solutions.',
 }
 
 export const skillGroups = [
