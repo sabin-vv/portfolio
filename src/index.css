@@ -3,16 +3,16 @@
 @import 'tailwindcss';
 
 :root {
-    --background: #10181a;
-    --surface: #151e21;
-    --surface-hover: #1b272a;
-    --accent: #00e5ff;
-    --accent-soft: #7defff;
-    --heading: #e8eef2;
-    --body: #93a5b4;
-    --muted: #647681;
-    --border: #29383d;
-    --button-text: #071113;
+    --background: #0d1017;
+    --surface: rgba(255, 255, 255, 0.075);
+    --surface-hover: rgba(255, 255, 255, 0.14);
+    --accent: #c5ddff;
+    --accent-soft: #dccaff;
+    --heading: #ffffff;
+    --body: rgba(255, 255, 255, 0.64);
+    --muted: rgba(255, 255, 255, 0.44);
+    --border: rgba(255, 255, 255, 0.18);
+    --button-text: #12141a;
 }
 
 @theme {
@@ -41,7 +41,7 @@
     --color-body: var(--body);
     --color-muted: var(--muted);
     --color-line: var(--border);
-    --color-iconbox: #12191b;
+    --color-iconbox: rgba(255, 255, 255, 0.08);
 }
 
 html {
@@ -50,7 +50,9 @@ html {
 
 body {
     background:
-        radial-gradient(circle at 10% 10%, rgba(0, 229, 255, 0.035), transparent 30%),
+        radial-gradient(circle at 12% 10%, rgba(109, 178, 255, 0.2), transparent 32%),
+        radial-gradient(circle at 90% 20%, rgba(196, 139, 255, 0.18), transparent 28%),
+        linear-gradient(135deg, #0d1017, #171b28 48%, #0d1017),
         var(--background);
     background-color: var(--background);
     color: var(--body);
@@ -60,6 +62,31 @@ body {
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
 }
+
+::selection { background: var(--accent); color: var(--button-text); }
+
+.eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+}
+
+.eyebrow::before {
+    content: '';
+    width: 2rem;
+    height: 1px;
+    background: currentColor;
+}
+
+.glass-hero-orb { position: absolute; z-index: -1; border-radius: 999px; filter: blur(12px); pointer-events: none; }
+.glass-hero-orb.one { top: -10rem; right: -5rem; width: 26rem; height: 26rem; background: rgba(93, 169, 255, .25); }
+.glass-hero-orb.two { bottom: -14rem; left: -6rem; width: 29rem; height: 29rem; background: rgba(184, 124, 255, .18); }
 
 :focus-visible {
     outline: 2px solid var(--accent);
