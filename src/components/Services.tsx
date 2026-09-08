@@ -4,10 +4,10 @@ import { LayoutIcon, DotsIcon, CodeIcon, PlugIcon } from '@/components/Icons'
 import { services } from '@/data/content'
 
 const serviceIcons = {
-    website: <LayoutIcon />,
-    webapp: <DotsIcon />,
+    fullstack: <LayoutIcon />,
     api: <CodeIcon />,
-    automation: <PlugIcon />,
+    database: <DotsIcon />,
+    deployment: <PlugIcon />,
 } as const
 
 interface ServicesProps {
@@ -16,8 +16,8 @@ interface ServicesProps {
 
 export default function Services({ showHeader = true }: ServicesProps) {
     return (
-        <section className="flex flex-col gap-8">
-            {showHeader && <SectionHeader title="Capabilities" />}
+        <section id="services" className="flex scroll-mt-24 flex-col gap-8">
+            {showHeader && <SectionHeader title="Services" />}
             <div className="grid sm:grid-cols-2 gap-4">
                 {services.map((service) => (
                     <ServiceCard
