@@ -7,5 +7,5 @@ interface PageContainerProps {
 }
 
 export default function PageContainer({ children, gap = 'gap-[80px]', className = '' }: PageContainerProps) {
-    return <div className={`max-w-275 mx-auto px-6 pt-25 pb-20 flex flex-col ${gap} ${className}`}>{children}</div>
+    return <div className={`max-w-300 mx-auto px-6 pt-25 pb-24 flex flex-col ${gap} ${className}`}>{children}</div>
 }
