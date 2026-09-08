@@ -1,58 +1,93 @@
-import { useState, useEffect } from 'react'
-import { NavLink, Link } from 'react-router-dom'
+import { useState, useEffect, type MouseEvent } from 'react'
+import { Link } from 'react-router-dom'
 import { navLinks } from '@/data/content'
-import { btnBase, btnOutline, btnPrimary } from '@/lib/styles'
+import profileImage from '@/assets/my_profile.png'
 
 const navLinkClass = (isActive: boolean, mobile = false) =>
-    `font-sans text-[13px] font-semibold tracking-[0.8px] uppercase transition-colors ${mobile ? 'py-1 ' : ''}${
-        isActive ? 'text-accent' : 'text-body hover:text-accent'
-    }`
+    `font-sans text-[13px] font-semibold tracking-[0.8px] uppercase transition-all ${
+        mobile ? 'rounded-lg px-3 py-2 ' : 'rounded-full px-3 py-1.5 '
+    }${isActive ? 'border border-white/20 bg-white/[0.14] text-white shadow-[0_4px_18px_rgba(120,170,255,.12)]' : 'border border-transparent text-body hover:border-white/10 hover:bg-white/[0.06] hover:text-white'}`
 
 export default function Navbar() {
     const [scrolled, setScrolled] = useState(false)
     const [menuOpen, setMenuOpen] = useState(false)
+    const [activeSection, setActiveSection] = useState(window.location.pathname.slice(1) || 'home')
 
     useEffect(() => {
         const onScroll = () => setScrolled(window.scrollY > 24)
         window.addEventListener('scroll', onScroll, { passive: true })
-        return () => window.removeEventListener('scroll', onScroll)
+        const onPopState = () => setActiveSection(window.location.pathname.slice(1) || 'home')
+        const onPortfolioNavigation = () => setActiveSection(window.location.pathname.slice(1) || 'home')
+        window.addEventListener('popstate', onPopState)
+        window.addEventListener('portfolio-navigation', onPortfolioNavigation)
+
+        const sectionObserver = new IntersectionObserver(
+            (entries) => {
+                const visibleSection = entries
+                    .filter((entry) => entry.isIntersecting)
+                    .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0]
+
+                if (visibleSection) setActiveSection(visibleSection.target.id)
+            },
+            { rootMargin: '-18% 0px -62% 0px', threshold: [0.05, 0.2, 0.5] },
+        )
+
+        navLinks.forEach((link) => {
+            const section = document.getElementById(link.section)
+            if (section) sectionObserver.observe(section)
+        })
+
+        return () => {
+            window.removeEventListener('scroll', onScroll)
+            window.removeEventListener('popstate', onPopState)
+            window.removeEventListener('portfolio-navigation', onPortfolioNavigation)
+            sectionObserver.disconnect()
+        }
     }, [])
+
+    const handleNavClick = (event: MouseEvent<HTMLAnchorElement>, section: string, path: string) => {
+        const target = document.getElementById(section)
+        if (!target) return
+
+        event.preventDefault()
+        window.history.pushState({}, '', path)
+        setActiveSection(section)
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        setMenuOpen(false)
+    }
 
     return (
         <header
             className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-                scrolled ? 'bg-bg/92 backdrop-blur-md border-b border-line' : 'bg-transparent'
+                scrolled ? 'border-b border-white/10 bg-bg/60 backdrop-blur-2xl' : 'bg-transparent'
             }`}
         >
             <div className="max-w-275 mx-auto px-6 h-16 flex items-center justify-between">
                 <Link to="/" className="flex items-center gap-2 group" aria-label="Home">
                     <span
-                        className="w-8 h-8 rounded-sm bg-accent flex items-center justify-center shrink-0"
+                        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-white/25 bg-white/10 backdrop-blur-md"
                         aria-hidden
                     >
-                        <span className="font-display font-bold text-accent-ink text-[14px] leading-none">S</span>
+                        <img src={profileImage} alt="" className="h-full w-full rounded-full object-cover" />
                     </span>
                     <span className="font-display font-semibold text-heading text-[16px] tracking-[-0.3px] group-hover:text-accent transition-colors">
                         Sabin VV
                     </span>
                 </Link>
 
+                <div className="flex items-center gap-3">
                 <nav className="hidden sm:flex items-center gap-6" aria-label="Primary">
                     {navLinks.map((link) => (
-                        <NavLink key={link.path} to={link.path} className={({ isActive }) => navLinkClass(isActive)}>
+                        <a
+                            key={link.path}
+                            href={link.path}
+                            onClick={(event) => handleNavClick(event, link.section, link.path)}
+                            className={navLinkClass(activeSection === link.section)}
+                        >
                             {link.label}
-                        </NavLink>
+                        </a>
                     ))}
                 </nav>
-
-                <div className="flex items-center gap-3">
-                    <Link
-                        to="/connect"
-                        className={`${btnBase} ${btnOutline} hidden sm:flex items-center justify-center px-5 py-2`}
-                    >
-                        Let&apos;s Talk
-                    </Link>
-
                     <button
                         className="sm:hidden flex flex-col gap-1.25 p-1"
                         aria-label="Toggle menu"
@@ -74,26 +109,19 @@ export default function Navbar() {
             </div>
 
             <div
-                className={`sm:hidden overflow-hidden transition-all duration-300 ${menuOpen ? 'max-h-64 border-b border-line' : 'max-h-0'}`}
+                className={`sm:hidden overflow-hidden transition-all duration-300 ${menuOpen ? 'max-h-80 border-b border-line' : 'max-h-0'}`}
             >
-                <nav className="bg-bg/95 backdrop-blur-md px-6 py-4 flex flex-col gap-4">
+                <nav className="flex flex-col gap-4 border-t border-white/10 bg-bg/70 px-6 py-4 backdrop-blur-2xl">
                     {navLinks.map((link) => (
-                        <NavLink
+                        <a
                             key={link.path}
-                            to={link.path}
-                            onClick={() => setMenuOpen(false)}
-                            className={({ isActive }) => navLinkClass(isActive, true)}
+                            href={link.path}
+                            onClick={(event) => handleNavClick(event, link.section, link.path)}
+                            className={navLinkClass(activeSection === link.section, true)}
                         >
                             {link.label}
-                        </NavLink>
+                        </a>
                     ))}
-                    <Link
-                        to="/connect"
-                        onClick={() => setMenuOpen(false)}
-                        className={`${btnBase} ${btnPrimary} mt-1 flex items-center justify-center px-5 py-2.5`}
-                    >
-                        Let&apos;s Talk
-                    </Link>
                 </nav>
             </div>
         </header>
